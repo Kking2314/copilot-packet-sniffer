@@ -1,0 +1,77 @@
+from scapy.all import IP, UDP, DNS, DNSQR, TCP, Raw
+from sniffer import parse_packet
+
+def test_parse_dns_packet():
+    pkt = IP(src="192.168.1.10", dst="8.8.8.8") / UDP(sport=12345, dport=53) / DNS(rd=1, qd=DNSQR(qname="example.com"))
+    parsed = parse_packet(pkt)
+
+    assert parsed["protocol"] == "UDP"
+    assert parsed["src_ip"] == "192.168.1.xxx"
+    assert parsed["dst_ip"] == "8.8.8.xxx"
+    assert "example.com" in parsed["dns_query"]
+
+def test_parse_http_packet():
+    payload = b"GET /login?token=abc123 HTTP/1.1\r\nHost: localhost\r\n\r\n"
+    pkt = IP(src="10.0.0.5", dst="10.0.0.10") / TCP(sport=1234, dport=80) / Raw(load=payload)
+    parsed = parse_packet(pkt)
+
+    assert parsed["protocol"] == "TCP"
+    assert parsed["http_request"] is not None
+    assert "token=[REDACTED]" in parsed["http_request"]from scapy.all import IP, UDP, DNS, DNSQR, TCP, Raw
+from sniffer import parse_packet
+
+def test_parse_dns_packet():
+    pkt = IP(src="192.168.1.10", dst="8.8.8.8") / UDP(sport=12345, dport=53) / DNS(rd=1, qd=DNSQR(qname="example.com"))
+    parsed = parse_packet(pkt)
+
+    assert parsed["protocol"] == "UDP"
+    assert parsed["src_ip"] == "192.168.1.xxx"
+    assert parsed["dst_ip"] == "8.8.8.xxx"
+    assert "example.com" in parsed["dns_query"]
+
+def test_parse_http_packet():
+    payload = b"GET /login?token=abc123 HTTP/1.1\r\nHost: localhost\r\n\r\n"
+    pkt = IP(src="10.0.0.5", dst="10.0.0.10") / TCP(sport=1234, dport=80) / Raw(load=payload)
+    parsed = parse_packet(pkt)
+
+    assert parsed["protocol"] == "TCP"
+    assert parsed["http_request"] is not None
+    assert "token=[REDACTED]" in parsed["http_request"]from scapy.all import IP, UDP, DNS, DNSQR, TCP, Raw
+from sniffer import parse_packet
+
+def test_parse_dns_packet():
+    pkt = IP(src="192.168.1.10", dst="8.8.8.8") / UDP(sport=12345, dport=53) / DNS(rd=1, qd=DNSQR(qname="example.com"))
+    parsed = parse_packet(pkt)
+
+    assert parsed["protocol"] == "UDP"
+    assert parsed["src_ip"] == "192.168.1.xxx"
+    assert parsed["dst_ip"] == "8.8.8.xxx"
+    assert "example.com" in parsed["dns_query"]
+
+def test_parse_http_packet():
+    payload = b"GET /login?token=abc123 HTTP/1.1\r\nHost: localhost\r\n\r\n"
+    pkt = IP(src="10.0.0.5", dst="10.0.0.10") / TCP(sport=1234, dport=80) / Raw(load=payload)
+    parsed = parse_packet(pkt)
+
+    assert parsed["protocol"] == "TCP"
+    assert parsed["http_request"] is not None
+    assert "token=[REDACTED]" in parsed["http_request"]from scapy.all import IP, UDP, DNS, DNSQR, TCP, Raw
+from sniffer import parse_packet
+
+def test_parse_dns_packet():
+    pkt = IP(src="192.168.1.10", dst="8.8.8.8") / UDP(sport=12345, dport=53) / DNS(rd=1, qd=DNSQR(qname="example.com"))
+    parsed = parse_packet(pkt)
+
+    assert parsed["protocol"] == "UDP"
+    assert parsed["src_ip"] == "192.168.1.xxx"
+    assert parsed["dst_ip"] == "8.8.8.xxx"
+    assert "example.com" in parsed["dns_query"]
+
+def test_parse_http_packet():
+    payload = b"GET /login?token=abc123 HTTP/1.1\r\nHost: localhost\r\n\r\n"
+    pkt = IP(src="10.0.0.5", dst="10.0.0.10") / TCP(sport=1234, dport=80) / Raw(load=payload)
+    parsed = parse_packet(pkt)
+
+    assert parsed["protocol"] == "TCP"
+    assert parsed["http_request"] is not None
+    assert "token=[REDACTED]" in parsed["http_request"]
