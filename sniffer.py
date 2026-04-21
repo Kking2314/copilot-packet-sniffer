@@ -3,7 +3,7 @@ import json
 import re
 from scapy.all import sniff, rdpcap, IP, TCP, UDP, DNS, DNSQR, Raw
 
-ALLOWED_INTERFACES = {"lo", "eth0"}
+ALLOWED_INTERFACES = {"lo", "eth0", "en0", "lo0"}
 
 def mask_ip(ip: str) -> str:
     parts = ip.split(".")
