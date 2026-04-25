@@ -1,25 +1,33 @@
-
 ## What I Captured
-I captured only authorized traffic on my own machine using the loopback interface (`lo`) and local test traffic. I generated traffic with a local Python web server and `curl`. I also tested the tool in pcap mode using a saved capture file.
+I captured live network traffic using the en0 interface.
+Traffic included DNS queries and HTTP requests generated using curl and ping.
 
-## What I Decoded
-The tool decoded:
-- IP addresses
-- TCP and UDP ports
-- DNS query names when present
-- HTTP request lines for plaintext traffic
-
-## What I Redacted and Why
-I masked IP addresses partially to reduce exposure of full host information. I also redacted:
-- email addresses
+## What I Redacted
+- IP addresses (masked last octet)
+- Emails
 - Authorization headers
-- cookies
-- query-string secrets such as `token=` and `password=`
+- Cookies/session tokens
+- Query parameters like password and token
 
-I did this because packet sniffers can expose sensitive data, and the project requires ethical guardrails.
+## Why Redaction Matters
+Packet sniffers can expose sensitive data such as credentials and session tokens. Redaction ensures ethical and safe usage.
 
 ## Copilot Reflection
-I used Copilot for boilerplate structure, CLI setup ideas, and test scaffolding. I rejected or modified suggestions that were too broad or unsafe. For example, I kept an interface allowlist, added redaction before output, and supported pcap mode in case live capture permissions were unavailable.
+Copilot helped with:
+- CLI parsing
+- JSON formatting
+- regex for redaction
 
-## Risks and Defender Detection
-Packet sniffers are powerful because they can reveal metadata and sometimes sensitive content in unencrypted traffic. Defenders can detect misuse by monitoring for unauthorized packet capture tools, unusual privilege use, suspicious promiscuous-mode behavior, and unexpected access to network interfaces.
+I rejected:
+- unsafe suggestions without redaction
+- unrestricted packet capture
+
+## Risks of Packet Sniffers
+- Can capture private user data
+- Can expose login credentials
+- Used in attacks like MITM
+
+## How Defenders Detect Misuse
+- Monitoring unusual traffic
+- Detecting promiscuous mode
+- IDS systems

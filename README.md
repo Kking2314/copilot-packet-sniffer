@@ -1,78 +1,97 @@
-# Copilot-Assisted Packet Sniffer: Seeing the Network (Ethically)
+# Copilot-Assisted Packet Sniffer: Seeing the Network Ethically
 
-## Overview
-This project is an ethical packet sniffer built with Python and Scapy. It captures only authorized traffic from loopback (`lo`) or from an approved `.pcap` file. It decodes basic protocols and redacts sensitive information before displaying output.
+## Project Overview
+
+This project is an ethical packet sniffer built with Python and Scapy. It captures only authorized lab traffic or reads from a PCAP file. The goal is to understand packet capture, TCP/UDP, DNS, HTTP, and safe redaction.
 
 ## Learning Goals
+
 - Understand packet capture concepts
-- Practice secure development with AI assistance
-- Capture only authorized/lab traffic
-- Redact sensitive fields
-- Reflect on risks and defender detection
+- Decode IP, TCP, UDP, DNS, and basic HTTP traffic
+- Use GitHub Copilot responsibly
+- Redact sensitive data before output
+- Explain the risks of packet sniffers
 
-## Ethics
-This tool may only be used on:
-- my own machine
-- loopback traffic
-- instructor-provided lab environments
-- approved `.pcap` files
+## Scope and Ethics
 
-It is not designed for capturing other people's traffic.
+Students may only capture traffic on:
 
-## Features
-- Live sniffing on approved interfaces
-- PCAP file parsing
-- Decodes IP, TCP, UDP, DNS
-- Extracts HTTP request line if plaintext
-- Redacts:
-  - partial IP addresses
-  - emails
-  - Authorization headers
-  - cookies
-  - query string secrets like password/token/session/auth
+- Their own machine
+- Loopback interface
+- Instructor-provided lab VM or lab network
+- Approved PCAP files
 
-## Installation
-```bash
-pip install -r requirements.txt
-Run Examples
-Live mode
-sudo python sniffer.py --mode live --iface lo --filter "udp port 53" --count 25
-PCAP mode
-python sniffer.py --mode pcap --pcap sample_pcaps/demo.pcap
-Run Tests
-pytest
-AI Use Policy
+Students may not capture other people’s traffic.
+
+## AI Use Policy
 
 Use Copilot for:
 
-boilerplate
-CLI parsing
-JSON formatting
-unit test scaffolds
+- Boilerplate
+- CLI parsing
+- JSON formatting
+- Unit test scaffolds
 
 Do not ask Copilot for:
 
-capturing other people’s traffic
-bypassing OS permissions
-stealth features
-persistence
-hiding activity
+- Capturing other people’s traffic
+- Bypassing OS permissions
+- Stealth features
+- Persistence
+- Hiding activity
 
 Always:
 
-add interface/pcap allowlist
-include redaction
-default to pcap mode if capture privileges are missing
+- Add interface/PCAP allowlist
+- Include redaction
+- Default to PCAP mode if capture permissions are missing
 
-Save it.
+## Setup
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install scapy pytest
+Run Examples
+sudo python3 sniffer.py --iface lo --filter "tcp port 80" --count 25
+python3 sniffer.py --pcap sample.pcap
+Testing
+pytest
+Redaction Features
+
+The tool redacts:
+
+Partial IP addresses
+Emails
+Authorization headers
+Cookies
+Passwords
+Tokens
+Session values
 
 ---
 
-# 6. Generate traffic for screenshots
+## `report.md` template
 
-## Step 10: Run a safe local web server
+```md
+# Packet Sniffer Report
 
-In one terminal:
+## What I Captured
+
+For this lab, I captured authorized traffic from my own machine using the loopback interface. I generated test traffic using a local Python web server and curl commands.
+
+Example command:
 
 ```bash
-python -m http.server 8000
+sudo python3 sniffer.py --iface lo --filter "tcp port 8000" --count 25
+
+Example traffic captured:
+
+{
+  "src_ip": "127.0.0.xxx",
+  "dst_ip": "127.0.0.xxx",
+  "transport": "TCP",
+  "src_port": 54321,
+  "dst_port": 8000,
+  "http_request": "GET /test?token=[REDACTED] HTTP/1.1"
+}
